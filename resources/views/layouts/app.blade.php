@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <title>{{ __('MediAI') }}</title>
+
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    <body class="font-sans antialiased">
+        <div class="min-h-screen bg-[url('/storage/app/public/backgroundImage/bg2.jpg')] bg-cover bg-fixed bg-no-repeat bg-center flex flex-col">
+            
+            @include('layouts.navigation')
+
+            @isset($header)
+                <header class="bg-[#030508]">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endisset
+
+            <main class="flex-1">
+                {{ $slot }}
+            </main>
+            
+            <footer class="bg-[#1f2937] mt-16">
+                <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center text-gray-500 dark:text-gray-400">
+                    <p class="font-bold text-red-600">MEDICAL DISCLAIMER</p>
+                    <p class="text-sm">
+                        MediAI and its AI Health Assistant are not medical professionals. The information and recommendations provided are for informational purposes only and do not constitute medical advice. Consult a qualified doctor or healthcare professional for an accurate diagnosis and treatment plan.
+                    </p>
+                    <p class="mt-4 text-sm">&copy; {{ date('Y') }} MediAI. All rights reserved.</p>
+                </div>
+            </footer>
+            
+        </div>   
+        
+        @stack('scripts')
+    </body>
+</html>
