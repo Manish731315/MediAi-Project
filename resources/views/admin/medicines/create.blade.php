@@ -58,19 +58,6 @@
 
                     <!-- Sidebar (Right Column) -->
                     <div class="md:col-span-1 space-y-6">
-                        <!-- Publish Card -->
-                        <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-6 text-gray-900 dark:text-gray-100">
-                                <h3 class="text-lg font-semibold mb-4">Publish</h3>
-                                <x-primary-button class="w-full justify-center">
-                                    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                    </svg>
-                                    {{ __('Save Medicine') }}
-                                </x-primary-button>
-                            </div>
-                        </div>
-
                         <!-- Organization Card -->
                         <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg">
                             <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -110,6 +97,18 @@
                                       onchange="previewImage(event)"/>
                                     <x-input-error :messages="$errors->get('image')" class="mt-2" />
                                 </div>
+                            </div>
+                        </div>
+                        <!-- Publish Card -->
+                        <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg">
+                            <div class="p-6 text-gray-900 dark:text-gray-100">
+                                <h3 class="text-lg font-semibold mb-4">Publish</h3>
+                                <x-primary-button class="w-full justify-center">
+                                    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                    {{ __('Save Medicine') }}
+                                </x-primary-button>
                             </div>
                         </div>
                     </div>
