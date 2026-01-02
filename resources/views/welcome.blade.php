@@ -216,7 +216,7 @@
                     <p class="text-sm text-gray-400 max-w-3xl">
                         MediAI and its AI Health Assistant are not medical professionals. The information and recommendations provided are for informational purposes only and do not constitute medical advice. Consult a qualified doctor or healthcare professional for an accurate diagnosis and treatment plan. If you are in an emergency, call your local emergency services.
                     </p>
-                    <p class="mt-6 text-sm text-gray-500">&copy; 2025 MediAI. All rights reserved.</p>
+                    <p class="mt-4 text-sm">&copy; {{ date('Y') }} MediAI. All rights reserved.</p>
                 </div>
             </div>
         </footer>
