@@ -44,5 +44,27 @@
             <p class="font-semibold text-yellow-600 dark:text-yellow-400">Your order is now pending prescription approval by our team.</p>
         @endif
     </div>
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            title: 'Order Placed!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'View My Orders',
+            confirmButtonColor: '#059669', // A nice emerald green
+            background: '#ffffff',
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{{ route('orders.index') }}";
+            }
+        });
+    </script>
+    @endif
    
 </x-app-layout>

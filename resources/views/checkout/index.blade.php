@@ -36,8 +36,17 @@
                                     <x-text-input class="block mt-1 w-full bg-gray-100 cursor-not-allowed" type="text" value="{{ Auth::user()->name }}" readonly />
                                 </div>
                                 <div>
-                                    <x-input-label value="Phone" />
-                                    <x-text-input class="block mt-1 w-full bg-gray-100 cursor-not-allowed" type="text" value="{{ Auth::user()->phone }}" readonly />
+                                    <x-input-label for="phone" value="Phone Number" />
+                                    
+                                    @if(Auth::user()->phone)
+                                        <x-text-input class="block mt-1 w-full bg-gray-100 cursor-not-allowed" 
+                                                    type="text" value="{{ Auth::user()->phone }}" readonly />
+                                        <input type="hidden" name="phone" value="{{ Auth::user()->phone }}">
+                                    @else
+                                        <x-text-input id="phone" name="phone" class="block mt-1 w-full border-blue-500" 
+                                                    type="text" required placeholder="Enter 10 digit number" />
+                                        <p class="text-xs text-blue-600 mt-1">Please provide a phone number to continue.</p>
+                                    @endif
                                 </div>
                             </div>
 

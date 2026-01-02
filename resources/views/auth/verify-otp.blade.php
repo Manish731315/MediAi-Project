@@ -27,4 +27,34 @@
             </x-primary-button>
         </div>
     </form>
+    <div class="mt-6 text-center">
+        <p id="timer-text" class="text-sm text-gray-600 dark:text-gray-400">
+            Resend code in <span id="timer" class="font-bold text-blue-600">60</span> seconds
+        </p>
+        
+        <form id="resend-form" method="POST" action="{{ route('verification.resend') }}" class="hidden">
+            @csrf
+            <button type="submit" class="text-sm text-blue-600 hover:underline font-semibold">
+                Resend OTP
+            </button>
+        </form>
+    </div>
+
+    <script>
+        let timeLeft = 60;
+        const timerSpan = document.getElementById('timer');
+        const timerText = document.getElementById('timer-text');
+        const resendForm = document.getElementById('resend-form');
+
+        const countdown = setInterval(() => {
+            timeLeft--;
+            timerSpan.innerText = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerText.classList.add('hidden'); // Hide the "Resend in..." text
+                resendForm.classList.remove('hidden'); // Show the "Resend OTP" button
+            }
+        }, 1000);
+    </script>
 </x-guest-layout>

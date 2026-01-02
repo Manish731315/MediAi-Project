@@ -8,7 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log; // Important for seeing OTPs
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OtpMail;
@@ -23,58 +23,58 @@ class RegisteredUserController extends Controller
 
     public function store(Request $request)
     {
+        // 1. Validate Input
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => ['required', 'digits:10', 'unique:'.User::class], // Validate Phone
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['required', 'digits:10', 'unique:users'],
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
-        // 1. Generate OTPs
+        // 2. Generate OTPs
         $emailOtp = rand(100000, 999999);
         $phoneOtp = rand(100000, 999999);
 
-        // 2. Log them (Since we don't have a real SMS gateway yet)
-        Log::info("REGISTRATION OTPS: Email: $emailOtp | Phone: $phoneOtp");
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
-            'email_otp' => $emailOtp,
-            'phone_otp' => $phoneOtp,
+        // 3. Store data in session, NOT the database yet
+        // This prevents "email already taken" errors if verification fails
+        session([
+            'pending_user' => [
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+                'email_otp' => $emailOtp,
+                'phone_otp' => $phoneOtp,
+            ]
         ]);
 
+        Log::info("PENDING REGISTRATION OTPS | Email: $emailOtp | Phone: $phoneOtp");
+
+        // 4. Send SMS via Twilio
         try {
-            $sid = env('TWILIO_SID');
-            $token = env('TWILIO_TOKEN');
+            $sid = config('services.twilio.sid');
+            $token = config('services.twilio.token');
             $client = new Client($sid, $token);
 
             $client->messages->create(
-                // The user's phone number (Must include country code, e.g., +91)
                 '+91' . $request->phone, 
                 [
-                    'from' => env('TWILIO_FROM'),
+                    'from' => config('services.twilio.from'),
                     'body' => "Your MediAI verification code is: $phoneOtp"
                 ]
             );
         } catch (\Exception $e) {
             Log::error("SMS sending failed: " . $e->getMessage());
         }
-        // 3. Send Emails/SMS here (Mocked by logging above)
-        // Mail::to($user)->send(new VerifyEmailOtp($emailOtp));
-        // Send Email
+
+        // 5. Send Email via OtpMail
         try {
-            Mail::to($user->email)->send(new OtpMail($emailOtp));
+            Mail::to($request->email)->send(new OtpMail($emailOtp));
         } catch (\Exception $e) {
             Log::error("Email sending failed: " . $e->getMessage());
         }
-        
-        // 4. Do NOT login yet. Redirect to verification page.
-        // We store the user ID in session to know who is verifying
-        session(['verify_user_id' => $user->id]);
 
+        // 6. Redirect to verification page
         return redirect()->route('verification.notice');
     }
 }

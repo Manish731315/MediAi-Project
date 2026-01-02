@@ -37,6 +37,7 @@ Route::post('/set-password', [ProfileController::class, 'setPassword'])->middlew
 // OTP Verification Routes
 Route::get('/verify-account', [VerificationController::class, 'notice'])->name('verification.notice');
 Route::post('/verify-account', [VerificationController::class, 'verify'])->name('verification.verify');
+Route::post('/verify-account/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 
 /*
 |--------------------------------------------------------------------------

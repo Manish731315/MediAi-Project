@@ -48,31 +48,45 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'payment_method' => 'required|string|in:card,cod',
-            'delivery_address' => 'required|string|min:10', 
-            'alternate_phone' => 'nullable|string|min:10',
+        // Define base validation rules
+        $rules = [
+            'payment_method'   => 'required|string|in:card,cod',
+            'delivery_address' => 'required|string|min:5',
             'city'             => 'required|string',
             'state'            => 'required|string',
             'pincode'          => 'required|digits:6',
             'landmark'         => 'nullable|string',
-        ]);
+            'alternate_phone'  => 'nullable|string|min:10',
+        ];
+
+        // --- FIX: Validate phone if the user doesn't have one (e.g., Google OAuth users) ---
+        if (!Auth::user()->phone) {
+            $rules['phone'] = 'required|digits:10|unique:users,phone';
+        }
+
+        $request->validate($rules);
 
         $user = Auth::user();
         
-        // --- FIX 1: SAVE ADDRESS IMMEDIATELY ---
-        // We save it here because the 'verifyPayment' request won't have this data later.
-        $user->update([
-            'address' => $request->delivery_address,
+        // Prepare data for profile update
+        $userData = [
+            'address'  => $request->delivery_address,
             'city'     => $request->city,
             'state'    => $request->state,
             'pincode'  => $request->pincode,
             'landmark' => $request->landmark,
             'country'  => 'India', // Default
-        ]);
+        ];
 
-        // --- FIX 2: HANDLE ALTERNATE PHONE ---
-        // Since we don't save this to the user table, we store it in Session for the Card flow.
+        // If they just filled in their phone, save it to their profile permanently
+        if ($request->has('phone')) {
+            $userData['phone'] = $request->phone;
+        }
+
+        // Update User Profile
+        $user->update($userData);
+
+        // Store alternate phone in session for the Razorpay flow
         $alternatePhone = $request->alternate_phone;
         if($request->payment_method === 'card') {
             session(['checkout_alternate_phone' => $alternatePhone]);
@@ -90,14 +104,13 @@ class CheckoutController extends Controller
         // --- COD LOGIC ---
         if ($paymentMethod === 'cod') {
             try {
-                // Pass alternate phone explicitly
                 $order = $this->_fulfillOrder($user, $cartItems, $total, 'cod', null, null, $alternatePhone);
                 
                 if ($order->status == 'pending_prescription') {
                     return redirect()->route('prescription.upload', ['order' => $order->id])
                         ->with('success', 'Order placed! Please upload your prescription.');
                 }
-                return redirect()->route('checkout.success', ['order' => $order->id]);
+                return redirect()->route('checkout.success', ['order' => $order->id])->with('success', 'Thank you! Your order has been placed successfully.');
 
             } catch (Throwable $e) {
                 return redirect()->route('cart.index')->with('error', 'Checkout failed: ' . $e->getMessage());
@@ -163,7 +176,6 @@ class CheckoutController extends Controller
             $cartItems = Cart::with('medicine')->where('user_id', $user->id)->get();
             $total = $cartItems->sum(fn($item) => $item->medicine->price * $item->quantity);
 
-            // --- FIX 3: RETRIEVE DATA FROM SESSION ---
             $alternatePhone = session('checkout_alternate_phone');
 
             $order = $this->_fulfillOrder(
@@ -173,10 +185,9 @@ class CheckoutController extends Controller
                 'card', 
                 $paymentId,        
                 $razorpayOrderId,
-                $alternatePhone // Pass the phone retrieved from session
+                $alternatePhone
             );
 
-            // Clean up session
             session()->forget(['razorpay_order_id', 'checkout_alternate_phone']);
             
             $redirectUrl = $order->status == 'pending_prescription'
@@ -194,10 +205,8 @@ class CheckoutController extends Controller
         }
     }
 
-    // --- FIX 4: UPDATED METHOD SIGNATURE ---
     private function _fulfillOrder($user, $cartItems, $total, $paymentMethod, $paymentId = null, $razorpayOrderId = null, $alternatePhone = null)
     {
-
         $requiresPrescription = $cartItems->contains(fn($item) => $item->medicine->prescription_required);
         $orderStatus = $requiresPrescription ? 'pending_prescription' : 'processing';
 
