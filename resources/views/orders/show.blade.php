@@ -58,6 +58,18 @@
                         </table>
                     </div>
 
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold">Order #{{ $order->id }}</h3>
+                        
+                        <a href="{{ route('orders.invoice', $order) }}" 
+                        class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                            </svg>
+                            Download Invoice (PDF)
+                        </a>
+                    </div>
+
                     @if($order->status === 'pending_prescription')
                         <div class="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                             <h4 class="font-bold text-yellow-800">Action Required</h4>
