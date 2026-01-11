@@ -1,52 +1,76 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('AI Health Assistant') }}
+        <h2 class="font-black text-2xl text-white tracking-tighter uppercase italic">
+            {{ __('MediAI Virtual Doctor') }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12 bg-gray-50 dark:bg-gray-950 min-h-screen">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+            
+            <div class="mb-8 p-6 bg-red-500/10 border border-red-500/20 rounded-[2rem] flex items-start space-x-4 animate__animated animate__fadeInDown">
+                <div class="bg-red-500 p-2 rounded-xl text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <div>
+                    <h3 class="font-black text-red-500 uppercase text-xs tracking-widest mb-1">Medical Disclaimer</h3>
+                    <p class="text-sm text-red-800/80 dark:text-red-200/80 leading-relaxed font-medium">
+                        This AI is an assistant, not a doctor. For accurate diagnosis or emergencies, please consult a professional immediately.
+                    </p>
+                </div>
+            </div>
 
-                    {{-- IMPORTANT DISCLAIMER --}}
-                    <div class="mb-4 p-4 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 border border-red-300 dark:border-red-700 rounded-lg">
-                        <p class="font-bold">IMPORTANT MEDICAL DISCLAIMER</p>
-                        <p class="text-sm">
-                            This AI is not a medical professional. Consult a qualified doctor for an accurate diagnosis.
-                            If you are experiencing a medical emergency, call your local emergency services immediately.
-                        </p>
-                    </div>
-
-                    {{-- Chat Container --}}
-                    <div class="flex flex-col gap-4 h-[60vh]">
-                        <div id="chat-log" aria-live="polite"
-                             class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-gray-900 rounded-lg border dark:border-gray-700">
-                            <div class="flex">
-                                <div class="p-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 max-w-lg">
-                                    <p>Hello! I am the MediAI Assistant. How are you feeling today? Please describe your symptoms.</p>
-                                </div>
-                            </div>
-
-                            {{-- Typing indicator moved inside chat log --}}
-                            <div id="typing-indicator" class="flex hidden">
-                                <div class="p-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 max-w-lg">
-                                    <p><i>MediAI is typing...</i></p>
-                                </div>
-                            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-[2.5rem] shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col h-[95vh]">
+                
+                <div id="chat-log" aria-live="polite" class="flex-1 overflow-y-auto p-6 md:p-10 space-y-8 no-scrollbar bg-[url('https://img.freepik.com/premium-vector/blue-bright-doctor-silhouette-background_36402-427.jpg?semt=ais_hybrid&w=740&q=80')] bg-cover bg-center bg-no-repeat">
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-white shadow-lg shrink-0">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                         </div>
-
-                        {{-- Chat input form --}}
-                        <form id="chat-form" class="flex items-center space-x-2">
-                            @csrf
-                            <x-text-input id="message-input" name="message" class="flex-1" placeholder="Type your symptoms..." required autocomplete="off" />
-                            <x-primary-button id="send-button" type="submit">
-                                Send
-                            </x-primary-button>
-                        </form>
+                        <div class="p-5 rounded-2xl rounded-tl-none bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm max-w-[80%] border border-gray-200 dark:border-gray-700">
+                            <p class="font-medium">Hello! I am your <strong>MediAI Assistant</strong>. How are you feeling today? Please describe your symptoms in detail.</p>
+                        </div>
                     </div>
 
+                    <div id="typing-indicator" class="flex items-start space-x-4 hidden">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-500 shrink-0">
+                            <span class="animate-pulse font-black">AI</span>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-gray-100 dark:bg-gray-800 text-gray-400 italic text-sm">
+                            MediAI is analyzing your symptoms...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-800">
+    
+                    <div class="flex overflow-x-auto space-x-3 mb-4 pb-2 no-scrollbar">
+                        <button type="button" onclick="quickAction('I have a severe headache and fever.')" 
+                                class="flex-shrink-0 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-bold text-gray-600 dark:text-gray-400 hover:border-emerald-500 hover:text-emerald-500 transition-all shadow-sm">
+                            🤒 Fever & Headache
+                        </button>
+                        <button type="button" onclick="quickAction('I have muscle pain and stiffness.')" 
+                                class="flex-shrink-0 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-bold text-gray-600 dark:text-gray-400 hover:border-emerald-500 hover:text-emerald-500 transition-all shadow-sm">
+                            💊 Muscles Pain
+                        </button>
+                        <button type="button" onclick="quickAction('I am experiencing Acidity and stomach discomfort.')" 
+                                class="flex-shrink-0 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-bold text-gray-600 dark:text-gray-400 hover:border-emerald-500 hover:text-emerald-500 transition-all shadow-sm">
+                            ✨ Acidity
+                        </button>
+                    </div>
+
+                    <form id="chat-form" class="flex items-center space-x-4 bg-white dark:bg-gray-800 p-2 rounded-2xl shadow-inner border border-gray-200 dark:border-gray-700">
+                        @csrf
+                        <input id="message-input" name="message" type="text" 
+                            class="flex-1 border-none bg-transparent focus:ring-0 dark:text-white px-4 font-medium" 
+                            placeholder="Describe your symptoms..." required autocomplete="off" />
+                        
+                        <button id="send-button" type="submit" 
+                                class="bg-emerald-500 hover:bg-emerald-400 text-gray-950 p-3 rounded-xl transition-all shadow-lg shadow-emerald-500/20 transform active:scale-95">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -61,11 +85,8 @@
             const typingIndicator = document.getElementById('typing-indicator');
             const sendButton = document.getElementById('send-button');
             const csrfToken = document.querySelector('input[name="_token"]').value;
-
-            // Base URL for adding items to cart
             const cartAddUrlBase = '{{ url('/cart/add') }}';
 
-            // Simple HTML escape function (prevents XSS)
             const escapeHTML = (str) =>
                 str.replace(/[&<>"']/g, (m) => (
                     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]
@@ -73,14 +94,17 @@
 
             chatForm.addEventListener('submit', function (e) {
                 e.preventDefault();
-
                 const message = messageInput.value.trim();
                 if (!message) return;
 
                 addMessage(message, 'user');
                 messageInput.value = '';
-
+                
+                // Show typing indicator at the bottom
+                chatLog.appendChild(typingIndicator);
                 typingIndicator.classList.remove('hidden');
+                scrollToBottom();
+                
                 sendButton.disabled = true;
 
                 fetch('{{ route('ai.chat.process') }}', {
@@ -92,41 +116,54 @@
                     },
                     body: JSON.stringify({ message: message })
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     typingIndicator.classList.add('hidden');
                     sendButton.disabled = false;
                     renderBotResponse(data);
                 })
                 .catch(error => {
-                    console.error('Error:', error);
                     typingIndicator.classList.add('hidden');
                     sendButton.disabled = false;
-                    addMessage('Sorry, I encountered an error connecting to the AI. Please try again.', 'bot');
+                    addMessage('Sorry, I encountered an error. Please check your internet connection.', 'bot');
                 });
             });
 
+            window.quickAction = function(text) {
+                const input = document.getElementById('message-input');
+                const form = document.getElementById('chat-form');
+                
+                input.value = text;
+                
+                // Dispatch a submit event to the form
+                form.dispatchEvent(new Event('submit'));
+            };
+
             function addMessage(content, type) {
                 const messageWrapper = document.createElement('div');
-                messageWrapper.className = 'flex';
+                messageWrapper.className = 'flex items-start space-x-4 ' + (type === 'user' ? 'flex-row-reverse space-x-reverse' : '');
+
+                // Avatar
+                const avatar = document.createElement('div');
+                avatar.className = `w-10 h-10 rounded-xl shrink-0 flex items-center justify-center shadow-md ${type === 'user' ? 'bg-indigo-600' : 'bg-emerald-500'}`;
+                avatar.innerHTML = type === 'user' 
+                    ? '<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>'
+                    : '<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>';
 
                 const messageBubble = document.createElement('div');
-                messageBubble.className = 'p-3 rounded-lg max-w-lg';
+                messageBubble.className = `p-5 rounded-2xl max-w-[80%] shadow-sm font-medium leading-relaxed ${
+                    type === 'user' 
+                    ? 'bg-indigo-600 text-white rounded-tr-none' 
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-tl-none border border-gray-200 dark:border-gray-700'
+                }`;
 
                 if (type === 'user') {
-                    messageWrapper.classList.add('justify-end');
-                    messageBubble.classList.add('bg-blue-600', 'text-white');
-                    messageBubble.textContent = content; // secure text only
+                    messageBubble.textContent = content;
                 } else {
-                    messageBubble.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-gray-100');
-                    messageBubble.innerHTML = content; // backend-sanitized bot HTML
+                    messageBubble.innerHTML = content;
                 }
 
+                messageWrapper.appendChild(avatar);
                 messageWrapper.appendChild(messageBubble);
                 chatLog.appendChild(messageWrapper);
                 scrollToBottom();
@@ -134,51 +171,51 @@
 
             function renderBotResponse(data) {
                 const safeText = (str) => escapeHTML(String(str || ''));
-                let html = `<p>${safeText(data.analysis)}</p>`;
-
+                let html = `<p class="mb-4">${safeText(data.analysis)}</p>`;
 
                 if (data.recommendations?.length > 0) {
-                    html += '<h4 class="font-semibold mt-3 mb-2">My Recommendations:</h4><ul class="list-disc list-inside space-y-1">';
+                    html += '<div class="bg-black/5 dark:bg-black/20 p-4 rounded-xl mb-4 border-l-4 border-emerald-500"><h4 class="font-black text-xs uppercase tracking-widest text-emerald-600 mb-2">Analysis & Recommendations</h4><ul class="space-y-2">';
                     data.recommendations.forEach(rec => {
-                        html += `<li><strong>${escapeHTML(rec.medicine_name)}:</strong> ${escapeHTML(rec.reason)}</li>`;
+                        html += `<li class="text-sm"><strong>${escapeHTML(rec.medicine_name)}:</strong> ${escapeHTML(rec.reason)}</li>`;
                     });
-                    html += '</ul>';
+                    html += '</ul></div>';
                 }
 
                 if (data.matched_products?.length > 0) {
-                    html += '<h4 class="font-semibold mt-3 mb-2">Available in our store:</h4>';
+                    html += '<h4 class="font-black text-xs uppercase tracking-widest text-gray-400 mb-3 mt-6">Buy from our Pharmacy</h4><div class="space-y-3">';
                     data.matched_products.forEach(product => {
                         html += `
-                            <div class="mt-2 flex items-center bg-white dark:bg-gray-800 p-2 rounded-lg border dark:border-gray-600">
-                                <img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}"
-                                     class="w-12 h-12 rounded mr-3 object-cover">
+                            <div class="flex items-center bg-white dark:bg-gray-900 p-3 rounded-2xl border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow">
+                                <img src="${escapeHTML(product.image)}" class="w-14 h-14 rounded-xl mr-4 object-cover border border-gray-100 dark:border-gray-800">
                                 <div class="flex-1">
-                                    <p class="font-bold text-sm">${escapeHTML(product.name)}</p>
-                                    <p class="text-sm font-semibold">₹${escapeHTML(product.price.toString())}</p>
+                                    <p class="font-black text-sm text-gray-800 dark:text-white uppercase italic tracking-tighter">${escapeHTML(product.name)}</p>
+                                    <p class="text-emerald-500 font-bold">₹${escapeHTML(product.price.toString())}</p>
                                 </div>
-
                                 <form action="${cartAddUrlBase}/${escapeHTML(product.id.toString())}" method="POST">
                                     <input type="hidden" name="_token" value="${csrfToken}">
                                     <input type="hidden" name="quantity" value="1">
-                                    <button type="submit"
-                                            class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
-                                            type="button">
-                                        Add to Cart
+                                    <button type="submit" class="bg-gray-900 dark:bg-emerald-500 text-white dark:text-gray-950 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform">
+                                        Add
                                     </button>
                                 </form>
-                            </div>
-                        `;
+                            </div>`;
                     });
+                    html += '</div>';
                 }
 
-                html += `<p class="mt-4 text-xs italic text-gray-500 dark:text-gray-400">${data.disclaimer}</p>`;
+                html += `<div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 opacity-60"><p class="text-[10px] italic leading-tight uppercase tracking-widest font-bold">${data.disclaimer}</p></div>`;
                 addMessage(html, 'bot');
             }
 
             function scrollToBottom() {
-                chatLog.scrollTop = chatLog.scrollHeight;
+                chatLog.scrollTo({ top: chatLog.scrollHeight, behavior: 'smooth' });
             }
         });
     </script>
     @endpush
+
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </x-app-layout>

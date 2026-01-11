@@ -1,54 +1,48 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-bold text-xl text-gray-800 dark:text-emerald-400 leading-tight">
             {{ __('Create New Medicine') }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12 bg-gray-50 dark:bg-gray-950">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <form action="{{ route('admin.medicines.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-                    <!-- Main Content (Left Column) -->
                     <div class="md:col-span-2 space-y-6">
-                        <!-- Basic Details Card -->
-                        <div class="bg-white dark:bg-gray-900  overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-6 text-gray-900 dark:text-gray-100">
-                                <h3 class="text-lg font-semibold mb-4">Basic Details</h3>
-                                <!-- Name -->
+                        <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-xl sm:rounded-[2rem] border border-gray-100 dark:border-gray-800">
+                            <div class="p-8 text-gray-900 dark:text-gray-100">
+                                <h3 class="text-lg font-black mb-6 uppercase tracking-widest text-emerald-500">Basic Details</h3>
+                                
                                 <div>
-                                    <x-input-label for="name" :value="__('Medicine Name')" class="text-[#2563eb]"/>
-                                    <x-text-input id="name" name="name" type="text" class="mt-1 bg-gray-700 border-none block w-full" :value="old('name')" required />
+                                    <x-input-label for="name" :value="__('Medicine Name')" class="text-gray-600 dark:text-gray-400 font-bold" />
+                                    <x-text-input id="name" name="name" type="text" class="mt-2 block w-full bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500" :value="old('name')" placeholder="e.g. Amoxicillin 500mg" required />
                                     <x-input-error :messages="$errors->get('name')" class="mt-2" />
                                 </div>
                                 
-                                <!-- Description -->
-                                <div class="mt-4">
-                                    <x-input-label for="description" :value="__('Description')" class="text-[#2563eb]"/>
-                                    <textarea id="description" name="description" class="border-gray-300 dark:border-gray-700 dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full h-32">{{ old('description') }}</textarea>
+                                <div class="mt-6">
+                                    <x-input-label for="description" :value="__('Product Description')" class="text-gray-600 dark:text-gray-400 font-bold" />
+                                    <textarea id="description" name="description" class="w-full mt-2 rounded-2xl bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500 text-gray-900 dark:text-gray-100 h-40" placeholder="Describe the usage, dosage, and warnings...">{{ old('description') }}</textarea>
                                     <x-input-error :messages="$errors->get('description')" class="mt-2" />
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Pricing & Inventory Card -->
-                        <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-6 text-gray-900 dark:text-gray-100">
-                                <h3 class="text-lg font-semibold mb-4">Pricing & Inventory</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <!-- Price -->
+                        <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-xl sm:rounded-[2rem] border border-gray-100 dark:border-gray-800">
+                            <div class="p-8 text-gray-900 dark:text-gray-100">
+                                <h3 class="text-lg font-black mb-6 uppercase tracking-widest text-emerald-500">Pricing & Inventory</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <x-input-label for="price" :value="__('Price (₹)')" class="text-[#2563eb]" />
-                                        <x-text-input id="price" name="price" type="number" step="0.01" class="mt-1 bg-gray-700 border-none block w-full" :value="old('price')" required />
+                                        <x-input-label for="price" :value="__('Unit Price (₹)')" class="text-gray-600 dark:text-gray-400 font-bold" />
+                                        <x-text-input id="price" name="price" type="number" step="0.01" class="mt-2 block w-full bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500" :value="old('price')" required />
                                         <x-input-error :messages="$errors->get('price')" class="mt-2" />
                                     </div>
                                     
-                                    <!-- Stock -->
                                     <div>
-                                        <x-input-label for="stock" :value="__('Stock Quantity')" class="text-[#2563eb]"/>
-                                        <x-text-input id="stock" name="stock" type="number" class="mt-1 bg-gray-700 border-none block w-full" :value="old('stock')" required />
+                                        <x-input-label for="stock" :value="__('Available Stock')" class="text-gray-600 dark:text-gray-400 font-bold" />
+                                        <x-text-input id="stock" name="stock" type="number" class="mt-2 block w-full bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500" :value="old('stock')" required />
                                         <x-input-error :messages="$errors->get('stock')" class="mt-2" />
                                     </div>
                                 </div>
@@ -56,60 +50,56 @@
                         </div>
                     </div>
 
-                    <!-- Sidebar (Right Column) -->
                     <div class="md:col-span-1 space-y-6">
-                        <!-- Organization Card -->
-                        <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-6 text-gray-900 dark:text-gray-100">
-                                <h3 class="text-lg font-semibold mb-4">Organization</h3>
-                                <!-- Category -->
+                        <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-xl sm:rounded-[2rem] border border-gray-100 dark:border-gray-800">
+                            <div class="p-8 text-gray-900 dark:text-gray-100">
+                                <h3 class="text-lg font-black mb-6 uppercase tracking-widest text-emerald-500">Organization</h3>
+                                
                                 <div>
-                                    <x-input-label for="category" :value="__('Category')" class="text-[#2563eb]"/>
-                                    <x-text-input id="category" name="category" type="text" class="mt-1 block bg-gray-700 border-none w-full" :value="old('category')" required />
-                                    <x-input-error :messages="$errors->get('category')" class="mt-2" />
+                                    <x-input-label for="category_id" :value="__('Select Category')" class="text-gray-600 dark:text-gray-400 font-bold" />
+                                    <select id="category_id" name="category_id" class="mt-2 block w-full rounded-2xl bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500 text-gray-900 dark:text-gray-100" required>
+                                        <option value="">Choose a Category</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                {{ $category->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
                                 </div>
-                                <!-- Prescription Required -->
-                                <div class="flex items-center space-x-2 mt-4 border-t dark:border-gray-700 pt-4">
-                                    <input id="prescription_required" name="prescription_required" type="checkbox" value="1" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" @checked(old('prescription_required'))>
-                                    <label for="prescription_required" class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Requires Prescription?') }}</label>
+
+                                <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" name="prescription_required" value="1" class="sr-only peer" @checked(old('prescription_required'))>
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 dark:peer-focus:ring-emerald-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"></div>
+                                        <span class="ml-3 text-sm font-bold text-gray-700 dark:text-gray-300 italic">Rx Required?</span>
+                                    </label>
                                 </div>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Check this box if this medicine requires a doctor's prescription.</p>
                             </div>
                         </div>
                         
-                        <!-- Image Card -->
-                        <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-6 text-gray-900 dark:text-gray-100">
-                                <h3 class="text-lg font-semibold mb-4">Medicine Image</h3>
-                                <!-- Image Preview -->
-                                <img id="imagePreview" src="https://placehold.co/600x400/e2e8f0/cbd5e1?text=No+Image" alt="Image preview" class="w-full h-48 object-cover rounded-md mb-4 bg-gray-100 dark:bg-gray-700"/>
+                        <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-xl sm:rounded-[2rem] border border-gray-100 dark:border-gray-800">
+                            <div class="p-8 text-gray-900 dark:text-gray-100">
+                                <h3 class="text-lg font-black mb-6 uppercase tracking-widest text-emerald-500">Medicine Image</h3>
                                 
-                                <div>
-                                    <x-input-label for="image" :value="__('Upload Image')" class="sr-only" />
-                                    <input id="image" name="image" type="file" class="mt-1 block w-full text-sm text-gray-500
-                                      file:mr-4 file:py-2 file:px-4
-                                      file:rounded-md file:border-0
-                                      file:text-sm file:font-semibold
-                                      file:bg-indigo-50 dark:file:bg-gray-700
-                                      file:text-indigo-700 dark:file:text-indigo-300
-                                      hover:file:bg-indigo-100 dark:hover:file:bg-gray-600"
-                                      accept="image/png, image/jpeg, image/jpg"
-                                      onchange="previewImage(event)"/>
-                                    <x-input-error :messages="$errors->get('image')" class="mt-2" />
+                                <div class="relative group mb-4">
+                                    <div class="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+                                    <img id="imagePreview" src="https://placehold.co/600x400/111827/cbd5e1?text=No+Image+Selected" alt="Image preview" class="relative w-full h-48 object-cover rounded-2xl bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700"/>
                                 </div>
+                                
+                                <input id="image" name="image" type="file" class="hidden" accept="image/png, image/jpeg, image/jpg" onchange="previewImage(event)"/>
+                                <label for="image" class="w-full flex items-center justify-center px-4 py-3 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-xl cursor-pointer hover:bg-emerald-500 hover:text-white transition-all font-bold">
+                                    Upload Photo
+                                </label>
+                                <x-input-error :messages="$errors->get('image')" class="mt-2" />
                             </div>
                         </div>
-                        <!-- Publish Card -->
-                        <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-6 text-gray-900 dark:text-gray-100">
-                                <h3 class="text-lg font-semibold mb-4">Publish</h3>
-                                <x-primary-button class="w-full justify-center">
-                                    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                    </svg>
-                                    {{ __('Save Medicine') }}
-                                </x-primary-button>
-                            </div>
+
+                        <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-xl sm:rounded-[2rem] border border-gray-100 dark:border-gray-800 p-2">
+                            <button type="submit" class="w-full flex items-center justify-center py-5 bg-emerald-500 hover:bg-emerald-400 text-gray-900 font-black rounded-[1.5rem] transition-all shadow-lg shadow-emerald-500/20 transform hover:-translate-y-1">
+                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
+                                {{ __('SAVE MEDICINE') }}
+                            </button>
                         </div>
                     </div>
                 </div>
