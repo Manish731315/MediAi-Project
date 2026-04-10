@@ -48,6 +48,7 @@
                 :value="old('email', $user->email)" 
                 required 
                 autocomplete="username" 
+                readonly
             />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 

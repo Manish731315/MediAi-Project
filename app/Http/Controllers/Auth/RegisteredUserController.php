@@ -23,20 +23,30 @@ class RegisteredUserController extends Controller
 
     public function store(Request $request)
     {
-        // 1. Validate Input
+        // 1. Validate Input (Strict Validation)
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' => ['required', 'digits:10', 'unique:users'],
+            // regex:/^[a-zA-Z\s]+$/ allows only letters and spaces
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
+            
+            // unique:users checks if email/phone already exists before proceeding
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'phone' => ['required', 'digits:10', 'unique:users,phone'],
+            
             'password' => ['required', 'confirmed', 'min:8'],
+        ], [
+            // Custom error messages for the interview/user experience
+            'name.regex' => 'The name field must only contain letters and spaces.',
+            'email.unique' => 'This email is already registered with MediAI.',
+            'phone.unique' => 'This phone number is already in use.',
         ]);
+
+        // --- AT THIS POINT, WE KNOW THE USER IS UNIQUE AND DATA IS VALID ---
 
         // 2. Generate OTPs
         $emailOtp = rand(100000, 999999);
         $phoneOtp = rand(100000, 999999);
 
-        // 3. Store data in session, NOT the database yet
-        // This prevents "email already taken" errors if verification fails
+        // 3. Store data in session
         session([
             'pending_user' => [
                 'name' => $request->name,
@@ -47,8 +57,6 @@ class RegisteredUserController extends Controller
                 'phone_otp' => $phoneOtp,
             ]
         ]);
-
-        Log::info("PENDING REGISTRATION OTPS | Email: $emailOtp | Phone: $phoneOtp");
 
         // 4. Send SMS via Twilio
         try {
@@ -64,17 +72,17 @@ class RegisteredUserController extends Controller
                 ]
             );
         } catch (\Exception $e) {
-            Log::error("SMS sending failed: " . $e->getMessage());
+            Log::error("Twilio SMS failed: " . $e->getMessage());
+            // In a real app, you might want to return with an error if SMS fails
         }
 
-        // 5. Send Email via OtpMail
+        // 5. Send Email
         try {
             Mail::to($request->email)->send(new OtpMail($emailOtp));
         } catch (\Exception $e) {
-            Log::error("Email sending failed: " . $e->getMessage());
+            Log::error("Mail failed: " . $e->getMessage());
         }
 
-        // 6. Redirect to verification page
         return redirect()->route('verification.notice');
     }
 }

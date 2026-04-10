@@ -49,16 +49,40 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
         // Define base validation rules
-        $rules = [
-            'payment_method'   => 'required|string|in:card,cod',
-            'delivery_address' => 'required|string|min:5',
-            'city'             => 'required|string',
-            'state'            => 'required|string',
-            'pincode'          => 'required|digits:6',
-            'landmark'         => 'nullable|string',
-            'alternate_phone'  => 'nullable|string|min:10',
-        ];
 
+    $rules = [
+        'payment_method'   => 'required|string|in:card,cod',
+        'delivery_address' => 'required|string|min:5',
+        
+        // City & State: Only letters and spaces allowed
+        'city'             => ['required', 'string', 'regex:/^[a-zA-Z\s]+$/'],
+        'state'            => ['required', 'string', 'regex:/^[a-zA-Z\s]+$/'],
+        
+        // Pincode: Exactly 6 digits
+        'pincode'          => 'required|digits:6',
+        
+        // Landmark: Only letters and spaces allowed (No numbers)
+        'landmark'         => ['nullable', 'string', 'regex:/^[a-zA-Z\s]*$/'],
+        
+        // Alternate Phone: Exactly 10 digits if provided
+        'alternate_phone'  => 'nullable|digits:10',
+    ];
+
+    $messages = [
+        'city.regex' => 'City name should only contain alphabets.',
+        'state.regex' => 'State name should only contain alphabets.',
+        'landmark.regex' => 'Landmark should not contain any numbers.',
+        'alternate_phone.digits' => 'The alternate phone number must be exactly 10 digits.',
+        'pincode.digits' => 'Pincode must be a 6-digit numeric code.',
+    ];
+
+    if (!Auth::user()->phone) {
+        $rules['phone'] = 'required|digits:10|unique:users,phone';
+    }
+
+    $request->validate($rules, $messages);
+
+    
         // --- FIX: Validate phone if the user doesn't have one (e.g., Google OAuth users) ---
         if (!Auth::user()->phone) {
             $rules['phone'] = 'required|digits:10|unique:users,phone';

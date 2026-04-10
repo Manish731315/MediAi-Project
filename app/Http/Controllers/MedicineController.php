@@ -98,7 +98,7 @@ class MedicineController extends Controller
         ]);
         
         $validated['prescription_required'] = $request->has('prescription_required');
-        // --- END OF MISSING PART ---
+        
 
         // Handle image update
         if ($request->hasFile('image')) {

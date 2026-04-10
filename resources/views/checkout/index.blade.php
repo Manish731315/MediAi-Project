@@ -67,26 +67,72 @@
                                 </div>
 
                                 <div>
-                                    <x-input-label for="landmark" value="Landmark (Back In)" class="text-emerald-500 font-black uppercase text-[10px] tracking-widest" />
-                                    <x-text-input id="landmark" name="landmark" class="block mt-2 w-full bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500 rounded-2xl" type="text" :value="Auth::user()->landmark" placeholder="Near Hospital/Park" />
+                                    <x-input-label for="landmark" value="Landmark (No Numbers)" class="text-emerald-500 font-black text-[10px] tracking-widest" />
+                                    <x-text-input 
+                                        id="landmark" 
+                                        name="landmark" 
+                                        class="block mt-2 w-full bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500 rounded-2xl" 
+                                        type="text" 
+                                        :value="Auth::user()->landmark" 
+                                        placeholder="Near Hospital"
+                                        pattern="[A-Za-z\s]*"
+                                        oninput="this.value = this.value.replace(/[0-9]/g, '');"
+                                    />
                                 </div>
+
                                 <div>
-                                    <x-input-label for="alternate_phone" value="Alternate Mobile (Back In)" class="text-emerald-500 font-black uppercase text-[10px] tracking-widest" />
-                                    <x-text-input id="alternate_phone" name="alternate_phone" class="block mt-2 w-full bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500 rounded-2xl" type="text" placeholder="Secondary Phone" />
+                                    <x-input-label for="alternate_phone" value="Alternate Mobile" class="text-emerald-500 font-black text-[10px] tracking-widest" />
+                                    <x-text-input 
+                                        id="alternate_phone" 
+                                        name="alternate_phone" 
+                                        class="block mt-2 w-full bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500 rounded-2xl" 
+                                        type="text" 
+                                        maxlength="10"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                        placeholder="Secondary Phone" 
+                                    />
                                 </div>
 
                                 <div class="grid grid-cols-3 md:col-span-2 gap-4 mt-4">
                                     <div>
                                         <x-input-label for="city" value="City" class="text-gray-500 font-bold" />
-                                        <x-text-input id="city" name="city" class="block mt-2 w-full bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500 rounded-2xl" type="text" :value="Auth::user()->city" required />
+                                        <x-text-input 
+                                            id="city" 
+                                            name="city" 
+                                            class="block mt-2 w-full bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500 rounded-2xl" 
+                                            type="text" 
+                                            :value="Auth::user()->city" 
+                                            required 
+                                            oninput="this.value = this.value.replace(/[0-9]/g, '');"
+                                        />
                                     </div>
+
                                     <div>
                                         <x-input-label for="state" value="State" class="text-gray-500 font-bold" />
-                                        <x-text-input id="state" name="state" class="block mt-2 w-full bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500 rounded-2xl" type="text" :value="Auth::user()->state" required />
+                                        <x-text-input 
+                                            id="state" 
+                                            name="state" 
+                                            class="block mt-2 w-full bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500 rounded-2xl" 
+                                            type="text" 
+                                            :value="Auth::user()->state" 
+                                            required 
+                                            oninput="this.value = this.value.replace(/[0-9]/g, '');"
+                                        />
                                     </div>
+
                                     <div>
                                         <x-input-label for="pincode" value="Pincode" class="text-gray-500 font-bold" />
-                                        <x-text-input id="pincode" name="pincode" class="block mt-2 w-full bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500 rounded-2xl" type="text" :value="Auth::user()->pincode" required pattern="[0-9]{6}" />
+                                        <x-text-input 
+                                            id="pincode" 
+                                            name="pincode" 
+                                            class="block mt-2 w-full bg-gray-50 dark:bg-gray-800 border-none focus:ring-2 focus:ring-emerald-500 rounded-2xl" 
+                                            type="text" 
+                                            :value="Auth::user()->pincode" 
+                                            required 
+                                            maxlength="6"
+                                            pattern="[0-9]{6}" 
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                        />
                                     </div>
                                 </div>
                             </div>
