@@ -97,6 +97,19 @@
                     Payment: {{ strtoupper($order->payment_method) }}
                 </td>
             </tr>
+            <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;">
+            <tr>
+                <td colspan="2">
+                    <div class="address-container">
+                        <div class="address-label">Billing To:</div>
+                        <div class="address-text">
+                            {{ $order->user->name }}<br>
+                            {{ $order->user->email }}<br>
+                            {{ $order->user->phone ?? 'N/A' }}<br>
+                            {{ $order->user->address ?? 'N/A' }}
+                        </div>
+                    </div>
+                </td>
         </table>
 
         <table class="items-table">

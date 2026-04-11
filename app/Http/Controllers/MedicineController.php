@@ -50,24 +50,25 @@ class MedicineController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'category' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'prescription_required' => 'nullable|boolean',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'category_id' => 'required|exists:categories,id', 
+            'image' => 'nullable|image|max:2048',
         ]);
 
-        $validated['prescription_required'] = $request->has('prescription_required');
+        $data['prescription_required'] = $request->has('prescription_required');
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('medicine_images', 'public');
+            $data['image'] = $request->file('image')->store('medicines', 'public');
         }
 
-        Medicine::create($validated);
-        return redirect()->route('admin.medicines.index')->with('success', 'Medicine added successfully.');
+        // This will now work because 'category' column is gone from DB
+        Medicine::create($data); 
+
+        return redirect()->route('admin.medicines.index')->with('success', 'Medicine added successfully!');
     }
 
     /**
