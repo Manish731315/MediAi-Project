@@ -100,6 +100,18 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Admin Dashboard
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
+    Route::get('/medicines/export/pdf', [AdminMedicineController::class, 'exportPdf'])
+    ->name('medicines.export.pdf');
+
+    Route::get('/orders/export/pdf', [AdminController::class, 'exportOrdersPdf'])
+    ->name('orders.export.pdf');
+
+    Route::get('/users/export/pdf', [AdminController::class, 'exportUsersPdf'])
+    ->name('users.export.pdf');
+
+    Route::get('/chat-logs/export/pdf', [AdminController::class, 'exportLogsPdf'])
+    ->name('logs.export.pdf');
+    
     // Admin Medicine Management (CRUD)
     // This handles index, create, store, edit, update, destroy
     Route::resource('medicines', AdminMedicineController::class);

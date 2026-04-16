@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Prescription;
 use App\Models\SymptomSession;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminController extends Controller
 {
@@ -113,5 +114,32 @@ class AdminController extends Controller
             ->paginate(20);
             
         return view('admin.chat-logs', compact('logs'));
+    }
+
+    public function exportOrdersPdf()
+    {
+        $orders = Order::with('user')->latest()->get();
+
+        $pdf = Pdf::loadView('admin.orders.pdf', compact('orders'));
+
+        return $pdf->download('orders.pdf');
+    }
+
+    public function exportUsersPdf()
+    {
+        $users = User::latest()->get();
+
+        $pdf = Pdf::loadView('admin.users.pdf', compact('users'));
+
+        return $pdf->download('users.pdf');
+    }
+
+    public function exportLogsPdf()
+    {
+        $logs = SymptomSession::with('user')->latest()->get();
+
+        $pdf = Pdf::loadView('admin.logs.pdf', compact('logs'));
+
+        return $pdf->download('ai_logs.pdf');
     }
 }

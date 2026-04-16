@@ -41,7 +41,7 @@ class AiDoctorService
         }
         
         $model = env('GEMINI_MODEL', 'gemini-2.5-flash');
-        $model = str_replace('models/', '', $model); // Keeps URL clean
+        $model = str_replace('models/', '', $model);
         $url = "{$this->geminiUrlBase}/{$model}:generateContent";
         
         try {
@@ -115,7 +115,7 @@ class AiDoctorService
     {
         return Medicine::where('prescription_required', false)
             ->where('stock', '>', 0)
-            ->get(['name', 'category', 'description']);
+            ->get(['name', 'category_id', 'description']);
     }
 
     /**

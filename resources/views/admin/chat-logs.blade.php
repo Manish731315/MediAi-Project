@@ -9,8 +9,17 @@
                     MediBot Natural Language Processing Logs
                 </p>
             </div>
-            <div class="bg-indigo-500/10 px-4 py-2 rounded-2xl border border-indigo-500/20 text-indigo-400 font-black text-xs uppercase tracking-widest">
-                Total Logs: {{ $logs->total() }}
+            <div class="flex items-center space-x-4">
+
+                <a href="{{ route('admin.logs.export.pdf') }}"
+                class="px-6 py-3 bg-blue-500 hover:bg-blue-400 text-white font-bold rounded-2xl shadow-lg">
+                    Export PDF
+                </a>
+
+                <div class="bg-indigo-500/10 px-4 py-2 rounded-2xl border border-indigo-500/20 text-indigo-400 font-black text-xs uppercase tracking-widest">
+                    Total Logs: {{ $logs->total() }}
+                </div>
+
             </div>
         </div>
     </x-slot>

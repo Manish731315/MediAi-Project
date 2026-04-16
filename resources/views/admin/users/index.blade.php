@@ -11,10 +11,17 @@
             </div>
             
             <div class="flex items-center space-x-4">
+
+                <a href="{{ route('admin.users.export.pdf') }}"
+                class="px-6 py-3 bg-blue-500 hover:bg-blue-400 text-white font-bold rounded-2xl shadow-lg">
+                    Export PDF
+                </a>
+
                 <div class="bg-gray-800/50 px-5 py-2 rounded-2xl border border-gray-700">
                     <span class="text-[10px] text-gray-500 font-black uppercase block">Registered Users</span>
                     <span class="text-emerald-500 font-black text-lg italic tracking-tighter">{{ $users->total() }} Members</span>
                 </div>
+
             </div>
         </div>
     </x-slot>

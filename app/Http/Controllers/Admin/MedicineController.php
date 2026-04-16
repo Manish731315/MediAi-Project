@@ -7,6 +7,8 @@ use App\Models\Medicine;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Order;
 
 class MedicineController extends Controller
 {
@@ -112,5 +114,14 @@ class MedicineController extends Controller
         $medicine->delete();
 
         return redirect()->route('admin.medicines.index')->with('success', 'Medicine deleted successfully.');
+    }
+
+    public function exportPdf()
+    {
+        $medicines = Medicine::with('category')->get();
+
+        $pdf = Pdf::loadView('admin.medicines.pdf', compact('medicines'));
+
+        return $pdf->download('medicines.pdf');
     }
 }

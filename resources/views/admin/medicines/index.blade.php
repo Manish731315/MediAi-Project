@@ -4,6 +4,10 @@
             <h2 class="font-black text-2xl text-white tracking-tighter uppercase italic">
                 {{ __('Inventory Management') }}
             </h2>
+            <a href="{{ route('admin.medicines.export.pdf') }}"
+            class="px-6 py-3 bg-blue-500 hover:bg-blue-400 text-white font-bold rounded-2xl shadow-lg">
+                Export PDF
+            </a>
             <a href="{{ route('admin.medicines.create') }}" class="group relative px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-gray-950 font-black rounded-2xl transition-all shadow-lg shadow-emerald-500/20 overflow-hidden">
                 <span class="relative z-10 flex items-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>

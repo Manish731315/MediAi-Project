@@ -81,7 +81,7 @@
                             <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" name="prescription_required" value="1" class="sr-only peer" @checked(old('prescription_required', $medicine->prescription_required))>
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 dark:peer-focus:ring-emerald-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"></div>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 dark:peer-focus:ring-emerald-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-1/2 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"></div>
                                     <span class="ml-3 text-sm font-bold text-gray-700 dark:text-gray-300 italic">Rx Required?</span>
                                 </label>
                             </div>

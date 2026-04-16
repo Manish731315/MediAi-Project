@@ -1,59 +1,136 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+MediAI: Intelligent Healthcare E-commerce & AI Consultation System
+MediAI is a full-stack healthcare platform designed to bridge the gap between traditional e-commerce and modern artificial intelligence. Built with the Laravel framework, it offers a seamless shopping experience for medicines while providing an AI-powered Symptom Analyzer that recommends over-the-counter (OTC) medications based on real-time pharmacy inventory.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+🚀 Core Features
+🩺 AI Doctor (Symptom Analyzer)
+Intelligent Consultation: Uses Google Gemini 1.5 (Flash/Pro) to analyze user-described symptoms.
 
-## About Laravel
+Inventory Integration: The AI only suggests medicines that are currently in the database and in stock.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Dynamic Matching: Backend logic reconciles AI text output with actual database IDs for instant "Add to Cart" functionality.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Resiliency: Implemented exponential backoff and retry logic to handle API 503/429 errors.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+🛒 E-commerce Engine
+Medicine Vault: Categorized listing of medicines (Personal Care, Antibiotics, etc.).
 
-## Learning Laravel
+Prescription Logic: Strict separation between OTC products and those requiring a Prescription (Rx).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Cart & Checkout: Fully functional shopping cart with quantity management.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Prescription Upload: Users can upload medical prescriptions for specific orders during checkout.
 
-## Laravel Sponsors
+🔐 Security & Authentication
+Dual Authentication: Standard email-based login and Google OAuth integration.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Admin Shield: Namespaced controllers and custom middleware to protect administrative routes.
 
-### Premium Partners
+Profile Management: Secure password setup for social-auth users and profile editing.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+📊 Admin Dashboard
+Inventory Management: Full CRUD (Create, Read, Update, Delete) for medicines.
 
-## Contributing
+PDF Export: Generate high-fidelity, audit-ready inventory reports using DomPDF.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Order Tracking: Monitor order statuses and verify uploaded prescriptions.
 
-## Code of Conduct
+🛠️ Tech Stack
+Framework: Laravel (v12.x)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Language: PHP 8.2+
 
-## Security Vulnerabilities
+Database: MySQL
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Frontend: Tailwind CSS, Alpine.js (Laravel Breeze)
 
-## License
+AI Integration: Google Gemini API (REST)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Reporting: Barryvdh/Laravel-DomPDF
+
+Environment: Developed on Windows 11
+
+📁 Project Structure Highlights
+The project follows a clean Service-Oriented Architecture to ensure the codebase is maintainable and scalable:
+
+app/Services/AiDoctorService.php: Encapsulates all AI logic, prompt engineering, and API communication.
+
+app/Http/Controllers/Admin/: Isolated namespace for administrative logic.
+
+app/Http/Controllers/ShopController.php: Handles the public-facing product catalog.
+
+resources/views/admin/medicines/pdf.blade.php: Specialized print-optimized layout for PDF reports.
+
+⚙️ Installation & Setup
+Clone the Repository:
+
+Bash
+git clone https://github.com/Manish731315/MediAi-Project.git
+cd MediAi-Project
+Install Dependencies:
+
+Bash
+composer install
+npm install && npm run build
+Environment Configuration:
+Create a .env file from the example:
+
+Bash
+cp .env.example .env
+Configure your database and add your Gemini API Key:
+
+Code snippet
+GEMINI_API_KEY=your_key_here
+AI_MODEL=gemini-1.5-flash
+
+RAZORPAY_KEY_ID=your_key_here
+RAZORPAY_KEY_SECRET=your_key_here
+
+GOOGLE_CLIENT_ID=your_key_here
+GOOGLE_CLIENT_SECRET=your_key_here
+GOOGLE_REDIRECT_URL=http://127.0.0.1:8000/auth/google/callback
+
+TWILIO_SID=your_key_here
+TWILIO_TOKEN=your_key_here
+TWILIO_FROM=your_twilio_number_here
+
+Database Migration:
+
+Bash
+php artisan migrate --seed
+Storage Link:
+
+Bash
+php artisan storage:link
+Run the Application:
+
+Bash
+php artisan serve
+📈 Future Enhancements
+Real-time Order Tracking: Integration of a map-based delivery tracking system.
+
+Multi-Model AI Failover: Automatic switching between Gemini and OpenAI if one service experiences downtime.
+
+Pharmacist Chat: A live-chat interface for direct communication with human medical professionals.
+
+👨‍💻 Author
+Manish Kumar
+
+3rd-Year BCA Student @ CIMAGE Group of Institutions, Patna.
+
+Focus: Full-Stack Web Development & AI Implementation.
+
+![alt text](127.0.0.1_8000_.png)
+
+![alt text](<Screenshot 2026-01-11 182751.png>)
+
+![alt text](<Screenshot 2026-01-11 231141.png>)
+
+![alt text](<Screenshot 2026-01-11 231422.png>)
+
+![alt text](<Screenshot 2026-01-11 231841.png>)
+
+![alt text](<Screenshot 2026-01-11 231244.png>)
+
+![alt text](<Screenshot 2026-01-11 232040.png>)
+
+![alt text](<Screenshot 2026-01-11 232115.png>)

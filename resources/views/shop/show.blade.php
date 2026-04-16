@@ -37,7 +37,7 @@
                                 @else
                                     <span class="bg-emerald-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase">OTC Product</span>
                                 @endif
-                                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest">{{ $medicine->category }}</span>
+                                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest">{{ $medicine->category->name ?? 'General' }}</span>
                             </div>
 
                             <h1 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter">
@@ -134,7 +134,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                     {{-- Logic to fetch related products from your Controller or a quick query --}}
                     @php
-                        $related = \App\Models\Medicine::where('category', $medicine->category)
+                        $related = \App\Models\Medicine::where('category_id', $medicine->category_id)
                                     ->where('id', '!=', $medicine->id)
                                     ->limit(4)
                                     ->get();
