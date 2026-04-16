@@ -121,11 +121,7 @@ Focus: Full-Stack Web Development & AI Implementation.
 
 ![alt text](127.0.0.1_8000_.png)
 
-![alt text](<Screenshot 2026-01-11 182751.png>)
-
 ![alt text](<Screenshot 2026-01-11 231141.png>)
-
-![alt text](<Screenshot 2026-01-11 231422.png>)
 
 ![alt text](<Screenshot 2026-01-11 231841.png>)
 
@@ -134,3 +130,5 @@ Focus: Full-Stack Web Development & AI Implementation.
 ![alt text](<Screenshot 2026-01-11 232040.png>)
 
 ![alt text](<Screenshot 2026-01-11 232115.png>)
+
+![alt text](<Screenshot 2026-01-11 231422.png>)
